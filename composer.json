@@ -1,0 +1,17 @@
+{
+    "name": "antxonx/random-string",
+    "description": "generate random strings with numbers and letters",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Antxonx\\RandomString\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Antxonx"
+        }
+    ],
+    "require": {}
+}
