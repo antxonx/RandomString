@@ -81,6 +81,9 @@ class RandomString
         $chunk = $rightleft . $leftright . $leftleft . $rightright;
 
         switch($this->flags){
+            case RandomStringFlags::NUMBERS_ONLY:
+                $this->code .= $chunk;
+                break;
             case RandomStringFlags::LETTERS_ONLY:
                 $this->code .= $this->addLetters($chunk, true);
                 break;
@@ -89,11 +92,6 @@ class RandomString
                 break;
             default: break;
         }
-    }
-
-    private function genNumberChunk(int $len)
-    {
-        
     }
 
     private function addLetters(string $chunk, bool $all = false): string
