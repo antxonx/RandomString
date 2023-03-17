@@ -52,6 +52,7 @@ class RandomString
 
     public function gen(): string
     {
+        $this->code = "";
         $mult =  floor($this->size / self::MAX_CHUNK);
         $rest = $this->size % self::MAX_CHUNK;
         for($i = 0; $i < $mult; $i++) {
@@ -63,24 +64,13 @@ class RandomString
 
     private function genChunk(int $len)
     {
-        $this->genNumberChunk($len);
-        switch($this->flags){
-            case RandomStringFlags::LETTERS_ONLY:
-                $this->addLetters(true);
-                break;
-            case RandomStringFlags::ALL_CHARS:
-                $this->addLetters(false);
-                break;
-            default: break;
-        }
-    }
-
-    private function genNumberChunk(int $len)
-    {
         if ($len < 1) {
             return "";
         }
-        $time = number_format(microtime(true), $len - self::BASE_SIZE, '.', '');
+        $time = number_format(microtime(true), $len - self::BASE_SIZE, '', '');
+        if($len < self::BASE_SIZE) {
+            $time = substr($time, self::BASE_SIZE-$len, $len);
+        }
         $left = substr($time, 0, strlen($time) / 2);
         $right = substr($time, strlen($time) / 2, strlen($time));
         $leftleft = substr($left, 0, strlen($left) / 2);
@@ -88,21 +78,36 @@ class RandomString
         $rightleft = substr($right, 0, strlen($right) / 2);
         $rightright = substr($right, strlen($right) / 2, strlen($right));
 
-        $this->code = str_replace('.', '', $rightleft . $leftright . $leftleft . $rightright);
+        $chunk = $rightleft . $leftright . $leftleft . $rightright;
+
+        switch($this->flags){
+            case RandomStringFlags::LETTERS_ONLY:
+                $this->code .= $this->addLetters($chunk, true);
+                break;
+            case RandomStringFlags::ALL_CHARS:
+                $this->code .= $this->addLetters($chunk, false);
+                break;
+            default: break;
+        }
     }
 
-    private function addLetters(bool $all = false)
+    private function genNumberChunk(int $len)
     {
-        $splitted = str_split($this->code);
-        $code = '';
+        
+    }
+
+    private function addLetters(string $chunk, bool $all = false): string
+    {
+        $splitted = str_split($chunk);
+        $alteredChucnk = '';
         foreach ($splitted as $n) {
             if ($all) {
-                $code .= $this->randomLetter($n);
+                $alteredChucnk .= $this->randomLetter($n);
             } else {
-                $code .= $this->isRandomTime() ? $this->randomLetter($n) : $n;
+                $alteredChucnk .= $this->isRandomTime() ? $this->randomLetter($n) : $n;
             }
         }
-        $this->code = $code;
+        return $alteredChucnk;
     }
 
     private function isRandomTime(): bool
