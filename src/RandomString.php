@@ -17,18 +17,18 @@ class RandomString
 
     private const LETTERS_INDEX = [
         ['U', 'M'],
-        ['A', 'Z', 'F'],
+        ['A', 'Z', 'F', 'N'],
         ['G', 'J'],
-        ['X', 'Q', 'E'],
-        ['C', 'T', 'V'],
+        ['X', 'Q'],
+        ['C', 'T'],
         ['I', 'K'],
-        ['S', 'B', 'N'],
+        ['S', 'B', 'E',  'V'],
         ['D', 'H', 'L'],
-        ['P', 'R', 'Y'],
-        ['O', 'W'],
+        ['P', 'R'],
+        ['O', 'W', 'Y'],
     ];
 
-    public function __construct(int $size, int $flags = RandomStringFlags::ALL_CHARS)
+    public function __construct(int $size = self::MAX_CHUNK, int $flags = RandomStringFlags::ALL_CHARS)
     {
         $this->size = $size;
         $this->flags = $flags;
